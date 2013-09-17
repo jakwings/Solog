@@ -1,0 +1,282 @@
+/********************************************************************\
+ * @版本：Solog V1
+ * @名称：Solog 个人博客系统
+ * @日期：2013-09-17
+ * @作者：Jak Wings
+ * @版权：GPLv3
+ * @兼容：Unix Server, Apache/2.2+, PHP/5.3.2+,5.4.x,5.5.x
+\********************************************************************/
+
+目录:
+
+  1. 程序简介
+  2. 安装步骤
+  3. 管理接口说明
+  4. 上传文章的内容格式
+  5. 弱化的 YAML 格式
+  6. 示例主题的特点
+  7. 主题接口介绍
+
+程序简介
+========
+
+该博客系统的优缺点如下：
+
+  * 优点：
+
+    1. 简单，易于理解。
+    2. 模块分离得较好，便于改装。
+    3. 使用文本形式记录数据的数据库，不依赖 SQL 软件。
+    4. 提供页面缓存机制，以及缓存开关。
+    5. 可利用简单的管理 API 制作多种形式的管理工具。
+    6. 能不论日期自动将多次尝试入侵管理 API 的人士的来源 IP 封禁。
+    7. 博文目录和标签自动生成。
+
+  * 缺点：
+
+    1. 由于文本数据库的局限性，不支持多人同时编辑博客，建议个人使用。
+    2. 主题接口默认提供的辅助函数不多，主题文件编写困难。
+    3. DIY 用户可能得熟悉文本数据库的使用。
+    4. 缓存自动清除机制比较粗暴。
+    5. 缺少可扩展性。
+    6. Apache 服务器必需安装并启用 Rewrite 模块，即，能够重写 URL 。
+
+我不打算为各版本保持可兼容性或可移植性，这只是个简单博客练习作品，该
+用 Wordpress 的还是用 Wordpress 去吧。
+
+
+安装步骤
+========
+
+1. 修改 /utils/config.php 中的配置
+2. 若修改了数据库位置，可将 /database 文件夹复制为你设置的目录。
+3. 修改 /install.php 中的用户名及密码
+4. 确保文件夹的权限都为 755 ，文件的权限都为 644 。
+5. 上传博客程序到服务器
+6. 访问 /install.php 便开始自动安装
+
+
+管理接口说明
+============
+
+只提供 POST 方法来管理博客，只需发送合法的 POST 请求到 /manage/api.php
+便可。可填写的参数值用 | 分隔，<> 表示必需参数值，[] 表示可选参数值。
+
+必需参数
+--------
+
+< 用户名 >: < 密码 >
+
+是的，你没看错，要以用户名为参数名称，密码直接作为参数值。
+
+增改文章
+--------
+
+action: add
+id: [ 正整数 ]
+file: < 文件 >
+
+id 是可选的，留空则添加新文章，否则更新相应 ID 的文章。
+
+删除文章
+--------
+
+action: del
+id: < 数字 >
+
+查看文章列表
+------------
+
+action: item
+type: [ i | p | c<目录名称> | t<标签名称> ]
+range: [ m[,n] ]
+
+type 中的 i 和 p 分别代表特殊页面（index）和一般博文（post）两种文章；
+c 和 t 分别代表目录（category）和标签（tag），后面要接一个名称。其默
+认值为 p 。
+
+range 代表范围，默认为 1,10 ，表示最后发表的第 1 篇到第 10 篇文章。若
+要查看所有范围的，可用只填 1 。
+
+管理缓存
+--------
+
+action: cache
+type: < clear >
+
+目前 type 的值只有一种，clear 表示清空所有缓存。
+
+查询访问记录
+------------
+
+action: access
+status: [ 0 | 1 | 2 ]
+range: [ m[,n] ]
+
+每次向 API 发送一次请求都会被记录。range 默认为 1,10 。status 默认为空，
+即显示所有类型的访问记录，0 为正常访问，1 为非法访问，2 为经过正常访问
+后被取消非法状态的访问。
+
+修改用户名及密码
+----------------
+
+action: secure
+user: < 新用户名 >
+pass: < 新密码 >
+
+由于该操作会直接修改 .htaccess, /utils/server.php,
+/manage/utils/server.php 三个文件，因此，若对那些文件进行了大改，影响了
+要修改的部分，则不建议使用该管理功能。
+
+
+上传文章的内容格式
+==================
+
+文章内容分为两部分，中间用一行连续的三个英文小横杠「---」分隔。在分隔符之后的为文章的 HTML 源代码，而在前面的是配置信息。
+
+配置信息采用我削弱并简化修改后的 YAML 语法，一会再介绍。
+
+特殊页面（index）
+-----------------
+
+title: "文章的标题"
+slug: an-index
+comment: true
+type: index
+
+所有可以用到的配置如上：
+
+  * type 是必需的，而且一定要为 index 。
+  * title 为标题，默认为空。
+  * comment 为 true 或 false ，指定是否开启评论区。默认为 false 。
+  * slug 是用来组成文章链接地址的，必填，生成的链接如 /i/an-index 。
+
+博文页面（post）
+----------------
+
+title: 博客开张
+slug: hello-world
+categories: 目录一/子目录一
+tags: [ 标签一, 标签二, " 标签三 " ]
+created: 2013-09-17 17:31:22 +08:00
+modified: 2013-09-17 17:31:23 +08:00
+comment: true
+feed: true
+type: post
+
+所有可以用到的配置如上：
+
+  * type 是必需的，必须为 post 。
+  * slug 是用来组成文章链接的，必填，生成的链接如
+    /posts/2013-09-17/hello-world.html
+  * feed 用于指定是否可显示在订阅内容中，默认为 false 。
+  * categories 指定文章所属目录，支持指定多个目录。默认为空。
+  * tags 指定文章标签。默认为空。
+  * created 是文章的初次发表日期，建议明确指定，因为会影响文章链接。
+  * modified 是文章的修改日期。默认为上传日期。
+
+文章的日期格式，支持所有能够被 PHP 的 strtotime 正确转换为 UNIX 时间
+截的表示方式，详情可参考以下网址：
+
+  http://www.php.net/manual/en/function.strtotime.php
+
+文章的目录或标签可为字符串或数组，即是说，"目录" 相当于 [目录] 。
+
+
+弱化的 YAML 格式
+================
+
+下面就介绍一下弱化后的 YAML 格式。
+（因为我技术不好，加上网上找的脚本有 bug ，我才弱化的……）
+
+  1. 词典：即 变量名: 变量值
+  2. 字符串：即 "字符串" ，两边的双引号可省略。
+  3. 布尔值：即 true 或 false ，不分字母大小写。
+  4. 数组：即用 [] 包裹（且用英文逗号 , 分隔的多个）值。
+
+字符串的 "" 和数组的 [] 都采用贪婪匹配，即是说，"text"it" 相当于
+text"it ，[ 1, 2, 3 ] ] 相当于 [ "1", "2", "3 ]" ] 。
+
+数组中带逗号 , 的字符串即使用双引号括起来，也会被当作分隔符。即是说，
+[ ",", 3 ] 相当于 [ """, """, "3" ] 。
+
+另外，完整的表达必须在一行中完成，不能分开多行表示。
+
+不合法的表示会被忽略。
+
+
+示例主题的特点
+==============
+
+这个安装包里提供了一套示例主题，其名称为「example」，未解压。
+
+该主题集成了以下插件：
+
+  * MathJax: http://www.mathjax.org/
+    设置了用 \( \) 来转换行内公式，用 \[ \] 来转换大段的公式。
+  * LiteBox: https://github.com/jakwings/js-LiteBox
+  * Disqus 评论框: disqus.com
+    须取消 /themes/example/partial/footer.php 中的某部分注释，并且添
+    加 disqus_shotname 的值。
+
+另外，该主题的样式有一大部分是为 reStructuredText 的转换工具
+rst2html.py 定制的，该工具可通过安装 docutils 获得：
+
+  http://docutils.sourceforge.net/index.html
+
+我还为此写了一个管理博客的 bash 脚本 solog ，放在 /tools 文件夹中。
+只需简单修改一下就能用来管理你的博客了。还提供简单的文章编写模板。
+
+
+主题接口介绍
+============
+
+一切详细内容请参照 /utils/render.php 。
+
+也要熟悉文本数据库的使用：https://github.com/jakwings/TextOfDatabase
+
+  1. 常量
+
+    $this->mDirAbs 当前主题的绝对路径，末尾不带 /
+
+    $this->mDirRel 当前主题的相对路径，末尾不带 /
+                   如 /blog/themes/example
+
+    $this->mDB 已经连接到数据库的文本数据库管理工具，页面渲染结束会自动
+               断开连接。
+    $this->mCfg 博客配置信息
+
+  2. 辅助函数
+
+    $this->GetArticlesByType
+    $this->GetArticlesByMeta
+    $this->GetArticlesByCategory
+    $this->GetArticlesByTag
+    $this->GetArticleByPath
+    $this->GetCategories
+    $this->GetContent
+    $this->GetExcerptFromContent
+    $this->GetExcerpt
+    $this->GetPrevArticle
+    $this->GetNextArticle
+
+  3. 必须实现的模块
+
+    // 渲染首页
+    protected function _GoHome($path, $pageNum);
+    // 渲染目录
+    protected function _GoCategory($path, $pageNum);
+    // 渲染标签
+    protected function _GoTag($path, $pageNum);
+    // 渲染博文归档
+    protected function _GoArchive($path, $pageNum);
+    // 渲染博文页面
+    protected function _GoPost($path, $pageNum);
+    // 渲染特殊页面
+    protected function _GoIndex($path, $pageNum);
+    // 渲染订阅内容
+    protected function _GoFeed($path, $pageNum);
+    // 渲染不存在页面
+    protected function _GoError($path, $pageNum);
+
+当然，假如决定写主题，这些 PHP 的皮毛都不算什么。

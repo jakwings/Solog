@@ -1,0 +1,32 @@
+## 这里没看懂 Apache 官方手册别碰
+Options FollowSymLinks SymLinksIfOwnerMatch
+Order Deny,Allow
+
+## 设定默认字符编码
+AddDefaultCharset UTF-8
+## 设定默认页面类型
+DefaultType text/plain
+
+<IfModule mod_dir.c>
+  ## 设定默认服务页面
+  DirectoryIndex nothing
+  ## 禁止自动将不存在的文件如 /foo 解释到文件夹 /foo/
+  DirectorySlash Off
+</IfModule>
+
+<FilesMatch "^\.">
+  ## 禁止浏览文件名以点开头的文件
+  Order Allow,Deny
+</FilesMatch>
+
+<FilesMatch "(?<!^install)\.php$">
+  ## 禁止运行非公开的脚本
+  Order Allow,Deny
+</FilesMatch>
+
+<IfModule mod_php5.c>
+  ## 关闭多余的魔术引号功能
+  php_value magic_quotes_gpc off
+  ## 设定 PHP 脚本默认字符编码
+  php_value default_charset utf-8
+</IfModule>

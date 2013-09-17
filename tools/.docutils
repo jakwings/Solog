@@ -1,0 +1,200 @@
+##################################################
+[general]
+##################################################
+
+auto_id_prefix: id-
+
+datestamp: %Y-%m-%d %H:%M:%S%z %U/%j
+
+#debug: 1
+
+#dump_internals: 0
+
+#dump_pseudo_xml: 0
+
+#dump_settings: 0
+
+#dump_transforms: 0
+
+#error_encoding: utf-8
+
+#error_encoding_error_handler: backslashreplace
+
+#exit_status_level: 5
+
+#expose_internals: 0
+
+footnote_backlinks: 1
+
+generator: 0
+
+#halt_level: severe
+
+id_prefix: docus-
+
+#input_encoding:
+
+#input_encoding_error_handler: strict
+
+language_code: zh-CN
+
+output_encoding: UTF-8
+
+#output_encoding_error_handler: strict
+
+#record_dependencies: 
+
+#report_level: warning
+
+sectnum_xform: 1
+
+source_link: 0
+
+#source_url:
+
+#strict_visitor: 0
+
+#strip_classes:
+
+strip_comments: 0
+
+#strip_elements_with_classes:
+
+#title: 
+
+#toc_backlinks: entry
+toc_backlinks: top
+
+#traceback: 0
+
+#warning_stream: stderr
+
+
+##################################################
+[parsers]
+##################################################
+
+#   Docutils currently supports only one parser,
+# for reStructuredText.
+
+[restructuredtext parser]
+file_insertion_enabled: 1
+pep_references: 0
+#pep_base_url: http://www.python.org/peps/
+#pep_file_url_template: pep-%04d
+raw_enabled: 1
+rfc_references: 1
+#rfc_base_url: http://www.faqs.org/rfcs/
+rfc_base_url: http://tools.ietf.org/html/
+tab_width: 2
+trim_footnote_reference_space: 0
+syntax_highlight: none
+smart_quotes: no
+
+
+##################################################
+[readers]
+##################################################
+
+[standalone reader]
+docinfo_xform: 1
+doctitle_xform: 1
+sectsubtitle_xform: 0
+
+[pep reader]
+# The pep_references and rfc_references settings
+# ([restructuredtext parser]) are "on" by default.
+
+[python reader]
+# Under construction.
+
+
+##################################################
+[writers]
+##################################################
+
+[docutils_xml writer]
+doctype_declaration: do
+indents: 0
+newlines: 0
+xml_declaration: 1
+
+[html4css1 writer]
+attribution: dash
+cloak_email_addresses: 1
+compact_lists: 1
+compact_field_lists: 1
+embed_stylesheet: 0
+field_name_limit: 14
+footnote_references: superscript
+initial_header_level: 2
+math_output: MathJax
+option_limit: 0
+#stylesheet: 
+stylesheet_path:
+table_style: borderless
+#template: 
+xml_declaration: 1
+
+[pep_html writer]
+no_random: 1
+#pep_home: .
+#python_home: ..
+
+[s5_html writer]
+current_slide: 0
+hidden_controls: 1
+overwrite_theme_files: 1
+theme: default
+#theme_url:
+view_mode: slideshow
+
+[latex2e writer]
+attribution: dash
+compound_enumerators: 0
+documentclass: article
+documentoptions: a4paper
+docutils_footnotes: 1
+embed_stylesheet: 1
+#figure_footnotes: 0
+font_encoding: T1
+footnote_references: superscript
+hyperlink_color: blue
+#hyperref_options:
+#latex_preamble:
+#literal_block_env:
+#section_enumerator_separator: -
+#section_prefix_for_enumerators: 1
+#stylesheet:
+#stylesheet_path:
+table_style: borderless
+#template:
+use_latex_abstract: 0
+use_latex_citations: 0
+#use_latex_footnotes:
+use_latex_docinfo: 0
+use_latex_toc: 1
+
+[xetex writer]
+#font_encoding:
+#latex_preamble:
+#template:
+
+[odf_odt writer]
+
+[pseudoxml writer]
+# No settings are defined for this Writer.
+
+
+##################################################
+[applications]
+##################################################
+
+[buildhtml application]
+#ignore:
+#prune: .hg, .bzr, .git, .svn
+recurse: 1
+#silent: 0
+
+[docfactory application]
+# (To be completed.)

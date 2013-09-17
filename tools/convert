@@ -1,0 +1,10 @@
+#!/bin/bash
+
+file=$1
+
+metadata=$( sed -n '1,/^---$/p' "${file}" | head -n -1 )
+rawhtml=$( sed -n '/^---$/,$p' "${file}" | tail -n +2 | ./rst2html | sed 's/border="1" //g' | psed -e 's/\(<a class="[^"]*external[^"]*\)" href="\([^"]\+\)">\2<\/a>/\1 href" href="\2">\2<\/a>/g' )
+
+echo "${metadata}"
+echo "---"
+echo "${rawhtml}"

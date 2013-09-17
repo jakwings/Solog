@@ -1,0 +1,3 @@
+#!/bin/bash
+
+cat | /usr/bin/rst2html.py --no-datestamp | /usr/bin/xmllint --html --nowarning -xpath '//body/*' - 2>/dev/null

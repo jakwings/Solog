@@ -1,0 +1,6 @@
+Options FollowSymLinks SymLinksIfOwnerMatch
+Order Deny,Allow
+
+<FilesMatch "\.php$">
+  Order Allow,Deny
+</FilesMatch>
