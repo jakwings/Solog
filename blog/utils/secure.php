@@ -1,6 +1,6 @@
 <?php
-// 禁止非 GET 方式的网络请求
-if ( $_SERVER['REQUEST_METHOD'] !== 'GET' ) {
+// 禁止非 GET 或非 HEAD 方式的网络请求
+if ( !in_array($_SERVER['REQUEST_METHOD'], array('GET', 'HEAD')) ) {
   catch_error(503);
 }
 // 禁止尝试直接对 index.php 传送额外参数
