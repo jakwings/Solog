@@ -1,6 +1,6 @@
 <?php
 // Add    增改一篇文章
-// Del    删除一篇文章 //关联信息删除失败
+// Del    删除一篇文章
 // Item   查询文章列表
 // :TODO: Track  发送 Trackback 信息
 // Cache  管理页面缓存
