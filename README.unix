@@ -236,6 +236,8 @@ rst2html.py 定制的，该工具可通过安装 docutils 获得：
 
 也要熟悉文本数据库的使用：https://github.com/jakwings/TextOfDatabase
 
+辅助函数会缓存结果，方便多次相同参数的调用。
+
   1. 常量
 
     $this->mDirAbs 当前主题的绝对路径，末尾不带 /
@@ -255,6 +257,7 @@ rst2html.py 定制的，该工具可通过安装 docutils 获得：
     $this->GetArticlesByTag
     $this->GetArticleByPath
     $this->GetCategories
+    $this->GetTags
     $this->GetContent
     $this->GetExcerptFromContent
     $this->GetExcerpt
