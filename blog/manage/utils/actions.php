@@ -613,7 +613,7 @@ class ActionHandler
       default: return;
     }
     $cache_dir = $GLOBALS['gSoCfg']['dir_database'] . '/files/cache/';
-    if ( $cache_type = 'index' ) {
+    if ( $cache_type === 'index' ) {
       $uri = rtrim($GLOBALS['gSoCfg']['dir_root_rel'], '/')
             . '/' . $type
             . ($path ? '/' . $path : '')
@@ -625,7 +625,14 @@ class ActionHandler
       }
     }
     if ( $cache_type === 'post' ) {
-      $filenames = glob($cache_dir . '{post,home,category,tag,archive,feed}/*.txt', GLOB_NOSORT | GLOB_BRACE);
+      // GLOB_BRACE 在某些非 GNU 系统中无法使用
+      //$filenames = glob($cache_dir . '{post,home,category,tag,archive,feed}/*.txt', GLOB_NOSORT | GLOB_BRACE);
+      $filenames = glob($cache_dir . 'post/*.txt', GLOB_NOSORT);
+      $filenames = array_merge($filenames, glob($cache_dir . 'home/*.txt', GLOB_NOSORT));
+      $filenames = array_merge($filenames, glob($cache_dir . 'category/*.txt', GLOB_NOSORT));
+      $filenames = array_merge($filenames, glob($cache_dir . 'tag/*.txt', GLOB_NOSORT));
+      $filenames = array_merge($filenames, glob($cache_dir . 'archive/*.txt', GLOB_NOSORT));
+      $filenames = array_merge($filenames, glob($cache_dir . 'feed/*.txt', GLOB_NOSORT));
       foreach ( $filenames as $filename ) {
         unlink($filename) or catch_error(503, '无法删除缓存文件！', TRUE);
       }
