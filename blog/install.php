@@ -128,6 +128,20 @@ if ( FALSE === @file_put_contents('./manage/utils/server.php', $api_server, LOCK
 
 
 ////////////////////////////////////////////////////////////////////////////////
+// 生成 robots.txt 提示搜索引擎勿抓取相关页面的内容
+$base = rtrim($gSoCfg['dir_root_rel'], '/') . '/';
+$robots = <<<"EOT"
+User-agent: *
+Disallow: {$base}categories/
+Disallow: {$base}tags/
+Disallow: {$base}feed.xml
+EOT;
+if ( FALSE === @file_put_contents('./robots.txt', $robots, LOCK_EX) ) {
+  catch_error(503, '创建配置文件 ./robots.txt 失败！');
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
 // 生成 .htaccess 文件
 $base = rtrim($gSoCfg['dir_root_rel'], '/') . '/';
 $regex_domain = preg_replace('/\\./', '\\\\.', $gSoCfg['web_host']);
