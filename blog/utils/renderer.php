@@ -87,7 +87,9 @@ abstract class Renderer
         }
       }
       // 生成缓存文件
+      ignore_user_abort(TRUE);
       @file_put_contents($this->mCacheFile, $content, LOCK_EX);
+      ignore_user_abort(FALSE);
       return $content;
     }
     return $content;
