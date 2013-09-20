@@ -26,6 +26,7 @@ abstract class Renderer
     $this->mDirRel = $this->mCfg['dir_theme_rel'];
     // 连接数据库
     $this->mDB = new Todb();
+    $this->mDB->Debug($this->mCfg['debug']);
     $this->mDB->Connect($this->mCfg['dir_database']);
     // 设置页面默认类型为 html
     @header('Content-Type: text/html; charset="utf-8"');
