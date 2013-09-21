@@ -21,6 +21,8 @@ function catch_error($errNum = 404, $errMsg = '', $toRedirect = FALSE) {
   }
   @header('HTTP/1.1 ' . $errStatus);
   @header('Content-Type: text/html; charset="UTF-8"');
+  @header('Cache-Control: max-age=0');
+  @header('Expires: ' . date(DATE_RFC1123));
   if ( empty($errMsg) ) {
     $errMsg = $errStatus;
   }
