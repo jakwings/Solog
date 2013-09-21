@@ -25,9 +25,7 @@ $secure_check = function ($status, $comment = '') {
         }
       }
     ));
-    if ( FALSE === $todb->Update('solog_login') ) {
-      catch_error(503, '无法重置你的错误登录记录次数！', TRUE);
-    }
+    $todb->Update('solog_login');
     // 每成功登录 5 次更新一次密码 digest，得保证配置文件没有被严重地修改。
     $count = $todb->Count('solog_login', function ($record) {
       return $record['status'] === 0;
