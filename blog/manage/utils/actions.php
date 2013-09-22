@@ -366,11 +366,6 @@ class ActionHandler
       $cid = intval($cid);
       $metas['cid'] = $cid;
       $metas['file'] = '/files/' . $metas['type'] . '/' . $cid . '.txt';
-      $filename = $GLOBALS['gSoCfg']['dir_database'] . $metas['file'];
-      if ( FALSE === @file_put_contents($filename, $content, LOCK_EX) ) {
-        $gDatabase->Disconnect();
-        catch_error(503, '无法保存文章内容到数据库！', TRUE);
-      }
       $old_metases = $gDatabase->Select('solog_contents', array(
         'action' => 'DEL+',
         'where' => function ($record) use ($cid) {
@@ -390,6 +385,11 @@ class ActionHandler
       $gDatabase->Insert('solog_contents', $new_record);
       if ( $metas['file'] !== $old_metas['file'] ) {
         @unlink($GLOBALS['gSoCfg']['serv_root'] . $old_metas['file']);
+      }
+      $filename = $GLOBALS['gSoCfg']['dir_database'] . $metas['file'];
+      if ( FALSE === @file_put_contents($filename, $content, LOCK_EX) ) {
+        $gDatabase->Disconnect();
+        catch_error(503, '无法保存文章内容到数据库！', TRUE);
       }
     }
     $this->_UpdateMetadata($metas, $old_metas);
