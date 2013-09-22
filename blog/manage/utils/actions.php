@@ -359,7 +359,7 @@ class ActionHandler
       foreach ( $headers as $header ) {
         $new_record[$header] = $metas[$header];
       }
-      $gDatabase->Append('solog_contents', $new_record, TRUE);
+      $gDatabase->Insert('solog_contents', $new_record);
       $old_metas = array();
     } else {
       // 更新旧文章
