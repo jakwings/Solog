@@ -99,7 +99,7 @@ if ( !empty($_SERVER['HTTP_REFERER']) ) {
   catch_error(403);
 }
 // 禁止不通过正确入口操作
-if ( empty($gServPassword) ) {
+if ( is_null($gServPassword) ) {
   $secure_check(1, '用户名错误');
   catch_error(403);
 }
