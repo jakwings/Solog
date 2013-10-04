@@ -618,7 +618,7 @@ class ActionHandler
             . '/' . $type
             . ($path ? '/' . $path : '')
             . ',' . $pageNum;
-      $cache_id = md5($uri);
+      $cache_id = md5($uri . $GLOBALS['gServEntry']);
       $cache_file = $cache_dir . $cache_type . '/' . $cache_id . '.txt';
       if ( is_file($cache_file) ) {
         unlink($cache_file) or catch_error(503, '无法删除缓存文件！', TRUE);

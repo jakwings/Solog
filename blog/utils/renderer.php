@@ -116,7 +116,7 @@ abstract class Renderer
           . ($path ? '/' . $path : '')
           . ',' . $pageNum;
     // 切勿随意修改缓存 ID ，这会影响到更新文章时删除旧文章缓存的操作。
-    $cache_id = md5($uri);
+    $cache_id = md5($uri . $GLOBALS['gServEntry']);
     $cache_dir = $this->mCfg['dir_database'] . '/files/cache/';
     $cache_file = $cache_dir . $cache_type . '/' . $cache_id . '.txt';
     $this->mCacheDir = $cache_dir;
