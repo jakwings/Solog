@@ -4,36 +4,37 @@ action=$1
 shift
 user=user
 pass=pass
+url='http://example.com/blog/manage/api.php'
 
 case $action in
   item)
     type=$1
     range=$2
-    curl http://example.com/blog/manage/api.php -s -d "$user=$pass" -d "action=item" -d "type=${type}" ${range:+-d "range=${range}"}
+    curl "$url" -s -d "$user=$pass" -d "action=item" -d "type=${type}" ${range:+-d "range=${range}"}
     ;;
   add)
     file=$1
     id=$2
-    ./convert "$file" | curl http://example.com/blog/manage/api.php -s -F "$user=$pass" -F "action=add" -F "file=@-" ${id:+-F "id=${id}"}
+    ./convert "$file" | curl "$url" -s -F "$user=$pass" -F "action=add" -F "file=@-" ${id:+-F "id=${id}"}
     ;;
   del)
     type=$1
     id=$2
-    curl http://example.com/blog/manage/api.php -s -d "$user=$pass" -d "action=del" -d "type=${type}" -d "id=${id}"
+    curl "$url" -s -d "$user=$pass" -d "action=del" -d "type=${type}" -d "id=${id}"
     ;;
   cache)
     type=$1
-    curl http://example.com/blog/manage/api.php -s -d "$user=$pass" -d "action=cache" -d "type=${type}"
+    curl "$url" -s -d "$user=$pass" -d "action=cache" -d "type=${type}"
     ;;
   access)
     status=$1
     range=$2
-    curl http://example.com/blog/manage/api.php -s -d "$user=$pass" -d "action=access" ${status:+-d "status=${status}"} ${range:+-d "range=${range}"}
+    curl "$url" -s -d "$user=$pass" -d "action=access" ${status:+-d "status=${status}"} ${range:+-d "range=${range}"}
     ;;
   secure)
     new_user=$1
     new_pass=$2
-    curl http://example.com/blog/manage/api.php -s -d "$user=$pass" -d "action=secure" -d "user=${new_user}" -d "pass=${new_pass}"
+    curl "$url" -s -d "$user=$pass" -d "action=secure" -d "user=${new_user}" -d "pass=${new_pass}"
     ;;
   *)
     echo "USAGE:
@@ -41,7 +42,7 @@ case $action in
   solog del <id>
   solog item [ i | p | c<name> | t<name> ] [ m[,n] ]
   solog cache clear
-  solog access [ 0 | 1 | 2 ] [ m[,n] ]
+  solog access [ '' | 0 | 1 | 2 ] [ m[,n] ]
   solog secure <username> <password>
 "
     ;;
