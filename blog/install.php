@@ -207,7 +207,7 @@ DefaultType text/plain
   Header always set Content-Security-Policy "reflected-xss filter"
   Header always set X-Content-Security-Policy "reflected-xss filter"
   Header always set X-WebKit-CSP "reflected-xss filter"
-  Header always set X-XSS-Proctection "1"
+  Header always set X-XSS-Protection "1"
   ## 禁止直接发送 PHP 版本信息
   Header always unset X-Powered-By
 </IfModule>
