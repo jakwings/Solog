@@ -191,7 +191,7 @@ DefaultType text/plain
   RewriteCond %{HTTP_REFERER} !^\$
   RewriteCond %{HTTP_REFERER} !^https?://([^.]+\\.)*{$regex_domain}\\.?/ [NC]
   RewriteCond %{REQUEST_URI}  !^{$base}errors/
-  RewriteRule \\.(png|gif|jpe?g|bmp)\$ /errors/hotlink.gif [R,L,NC]
+  RewriteRule \\.(png|gif|jpe?g|bmp)\$ /errors/hotlink.gif? [R,L,NC]
   ## 路由配置
   RewriteCond %{REQUEST_URI} ^{$base}(,\\d+)?\$ [OR]
   RewriteCond %{REQUEST_URI} ^{$base}(archives(,\\d+)?|feed\\.xml)\$ [OR]
